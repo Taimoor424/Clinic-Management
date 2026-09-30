@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Prescription</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f7f7f7;
+    }
+    .prescription {
+      width: 800px;
+      margin: 30px auto;
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 30px;
+      position: relative;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #00a8c5;
+      padding-bottom: 10px;
+    }
+    .header-left {
+      color: #0074a8;
+    }
+    .header-left h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .header-left p {
+      margin: 0;
+      font-size: 14px;
+    }
+    .header-right {
+      text-align: right;
+    }
+    .header-right h2 {
+      margin: 0;
+      font-size: 24px;
+      color: #43a047;
+    }
+    .header-right p {
+      margin: 0;
+      font-size: 14px;
+    }
+    .patient-info {
+      margin-top: 20px;
+      border-bottom: 1px dashed #ccc;
+      padding-bottom: 10px;
+    }
+    .patient-info p {
+      margin: 5px 0;
+    }
+    .main-content {
+      min-height: 300px;
+      padding: 20px 0;
+      background-image: url('https://img.icons8.com/ios/100/000000/stethoscope.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 120px;
+      opacity: 0.95;
+    }
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 2px solid #00a8c5;
+      padding-top: 10px;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .contact-box {
+      background-color: #00a8c5;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="prescription">
+    <div class="header">
+      <div class="header-left">
+        <h2>Dr. Doctor Name</h2>
+        <p>Qualification</p>
+        <p>Specialization / Timings</p>
+      </div>
+      <div class="header-right">
+        <h2>Hospital Name</h2>
+        <p>Slogan Here</p>
+        <p>Address Line</p>
+      </div>
+    </div>
+
+    <div class="patient-info">
+      <p><strong>Patient Name:</strong> _____________________ &nbsp;&nbsp; <strong>File No:</strong> ____________</p>
+      <p><strong>Date of Birth:</strong> ____________________ &nbsp;&nbsp; <strong>Date:</strong> _______________</p>
+      <p><strong>Address:</strong> ______________________________________________________</p>
+      <p><strong>Diagnosis:</strong> ____________________________________________________</p>
+    </div>
+
+    <div class="main-content">
+      <!-- Prescriptions will go here -->
+    </div>
+
+    <div class="footer">
+      <div class="contact-box">
+        <p>📞 Phone: 0123-456789 | 🌐 www.hospitalwebsite.com | 📍 Address Line</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

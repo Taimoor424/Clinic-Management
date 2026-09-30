@@ -1,0 +1,13 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Hanisha Homeo Clinic{% endblock %}
+
+{% block content %}
+    {% include 'partials/header.html' %}
+    {% include 'partials/about.html' %}
+
+    {% include 'partials/services.html' %}
+    {% include 'partials/team.html' %}
+    {% include 'partials/symptom_checker.html' %}
+{% endblock %}

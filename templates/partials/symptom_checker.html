@@ -1,0 +1,39 @@
+
+<div class="position-fixed bottom-0 end-0 m-4" style="z-index: 1055;">
+  <div class="card shadow border-primary rounded-4 p-3" style="min-width: 320px;">
+  <div class="text-center mb-3">
+    <h5 class="fw-bold text-primary">🤖 Your Health Assistant</h5>
+    <small class="text-muted">Get suggestions based on your symptoms</small>
+  </div>
+
+  <form method="post" action="{% url 'base:symptom_checker' %}">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="symptom" class="form-label fw-bold">Symptoms</label>
+
+      <textarea
+        name="symptom"
+        class="form-control"
+        id="symptom"
+        rows="3"
+        placeholder="e.g., I have a sore throat and fever."
+        required
+      ></textarea>
+    </div>
+
+    <div class="d-grid">
+      <button type="submit" class="btn btn-primary fw-semibold">
+        Send
+      </button>
+    </div>
+  </form>
+
+  {% if response_text %}
+  <hr />
+  <div class="alert alert-info mt-3 small">
+    <strong>Suggestion:</strong><br />
+    {{ response_text|linebreaks }}
+  </div>
+  {% endif %}
+</div>
+</div>

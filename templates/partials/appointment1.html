@@ -1,0 +1,133 @@
+{% load static %}
+
+<!-- Appointment Start -->
+<section class="container">
+  <div class="row d-flex justify-content-center align-items-center">
+    <!-- Doctor Image -->
+    <div class="col-12 col-lg-5">
+      {% if doctor.image %}
+        <img class="img-fluid mt-4 doc-img" src="{{ doctor.image.url }}" alt="Doctor Image" style="width: 100%; height: 350px; object-fit: cover; border-radius: 5px;" />
+      {% else %}
+        <div class="text-center mt-4 bg-light d-flex align-items-center justify-content-center" style="width: 100%; height: 350px; border-radius: 5px;">
+          <i class="fa fa-user-md fs-1 text-primary"></i>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Doctor Info -->
+    <div class="col-12 col-lg-7 p-4 rounded-3 bg-white">
+      <h1 class="display-4 fw-bold mt-4"> {{ doctor.full_name }}</h1>
+      <p class="fs-4 mt-4">{{ doctor.bio }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- Appointment Form Section -->
+<div class="container-xxl py-5">
+  <div class="container">
+    <div class="row g-5">
+      
+      <!-- Info Cards -->
+      <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+        <p class="d-inline-block border rounded-pill py-1 px-4 a1">Appointment</p>
+        <h1 class="mb-4 a1">Make An Appointment To Visit Our Doctor</h1>
+        <p class="mb-4 a1">Please fill in the form to schedule your appointment.</p>
+
+        <div class="bg-light rounded d-flex align-items-center p-5 mb-4">
+          <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+            <i class="fa fa-phone-alt text-primary"></i>
+          </div>
+          <div class="ms-4">
+            <p class="mb-2">Call Us Now</p>
+            <h5 class="mb-0">+012 345 6789</h5>
+          </div>
+        </div>
+
+        <div class="bg-light rounded d-flex align-items-center p-5">
+          <div class="d-flex flex-shrink-0 align-items-center justify-content-center rounded-circle bg-white" style="width: 55px; height: 55px;">
+            <i class="fa fa-envelope-open text-primary"></i>
+          </div>
+          <div class="ms-4">
+            <p class="mb-2">Mail Us Now</p>
+            <h5 class="mb-0">info@example.com</h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+        <div class="bg-light rounded h-100 d-flex align-items-center p-5">
+          <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="row g-3">
+
+              <!-- Full Name -->
+              <div class="col-12 col-sm-6">
+                <input type="text" name="full_name" value="{{ form.full_name.value|default:patient.full_name }}" class="form-control border-0" placeholder="Your Full Name" style="height: 55px;">
+                {% if form.full_name.errors %}
+                  <small class="text-danger">{{ form.full_name.errors.0 }}</small>
+                {% endif %}
+              </div>
+
+              <!-- Email -->
+              <div class="col-12 col-sm-6">
+                <input type="email" name="email" value="{{ form.email.value|default:patient.email }}" class="form-control border-0" placeholder="Your Email Address" style="height: 55px;">
+                {% if form.email.errors %}
+                  <small class="text-danger">{{ form.email.errors.0 }}</small>
+                {% endif %}
+              </div>
+
+              <!-- Mobile -->
+              <div class="col-12 col-sm-6">
+                <input type="text" name="mobile" maxlength="11" value="{{ form.mobile.value|default:patient.mobile }}" class="form-control border-0" placeholder="Your Mobile (11 digits)" style="height: 55px;">
+                {% if form.mobile.errors %}
+                  <small class="text-danger">{{ form.mobile.errors.0 }}</small>
+                {% endif %}
+              </div>
+
+              <!-- Gender -->
+              <div class="col-12 col-sm-6">
+                <select name="gender" class="form-select border-0" style="height: 55px;">
+                  <option value="">Select Gender</option>
+                  <option value="Male" {% if form.gender.value == "Male" %}selected{% endif %}>Male</option>
+                  <option value="Female" {% if form.gender.value == "Female" %}selected{% endif %}>Female</option>
+                </select>
+                {% if form.gender.errors %}
+                  <small class="text-danger">{{ form.gender.errors.0 }}</small>
+                {% endif %}
+              </div>
+
+              <!-- Appointment Date (readonly) -->
+              <div class="col-12 col-sm-6">
+                <input type="text" value="{{ doctor.next_available_appointment_date }}" class="form-control border-0" readonly style="height: 55px;">
+              </div>
+
+              <!-- Issues -->
+              <div class="col-12">
+                <textarea name="issues" class="form-control border-0" rows="5" placeholder="Describe your health issues">{{ form.issues.value|default_if_none:'' }}</textarea>
+                {% if form.issues.errors %}
+                  <small class="text-danger">{{ form.issues.errors.0 }}</small>
+                {% endif %}
+              </div>
+
+              <!-- Submit -->
+              <div class="col-12">
+                <button class="btn btn-primary w-100 py-3" type="submit">Book Appointment</button>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Appointment End -->
+
+<!-- JS: Restrict Mobile to 11 Digits -->
+<script>
+  document.querySelector('input[name="mobile"]').addEventListener('input', function () {
+    this.value = this.value.replace(/\D/g, '').slice(0, 11);
+  });
+</script>

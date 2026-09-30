@@ -1,0 +1,80 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}{{ blog.title }}{% endblock %}
+
+{% block content %}
+<!-- Spinner Start -->
+<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+ <div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+ </div>
+</div>
+<!-- Spinner End -->
+
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container py-5">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">{{ blog.title }}</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase mb-0">
+                <li class="breadcrumb-item"><a class="text-white" href="{% url 'base:blogs' %}">Blogs</a></li>
+                <li class="breadcrumb-item text-primary active text-c" aria-current="page">{{ blog.title|truncatechars:25 }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Blog Detail and Related Sidebar -->
+<div class="container py-5">
+    <div class="row">
+        <!-- Blog Content -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+                {% if blog.image %}
+                <img src="{{ blog.image.url }}" class="card-img-top blim rounded-top" style="max-height: 500px; object-fit: cover;" alt="{{ blog.title }}">
+                {% endif %}
+                <div class="card-body p-4">
+                <h1 class="card-title fw-bold mb-4" style="font-size: 60px; font-family: 'Merriweather', serif;">
+                    {{ blog.title }}
+                </h1>
+                    <p class="text-muted mb-3">By {{ blog.author }} | {{ blog.created_at|date:"F d, Y" }}</p>
+                    <hr>
+                    <div class="card-text blog-content">
+                        {{ blog.content|safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Blogs Sidebar -->
+        <div class="col-lg-4">
+            <div class="p-4 rounded shadow-sm" style="background-color: #f8f9fa;">
+                <h4 class="mb-4">Related Blogs</h4>
+                {% if related_blogs %}
+                    {% for item in related_blogs %}
+                    <div class="mb-3 d-flex">
+                        {% if item.image %}
+                        <img src="{{ item.image.url }}" class="me-3 rounded" style="width: 80px; height: 60px; object-fit: cover;" alt="{{ item.title }}">
+                        {% endif %}
+                        <div>
+                            <a href="{% url 'base:blog_detail' item.id %}" class="fw-semibold text-dark text-decoration-none">
+                                {{ item.title|truncatechars:50 }}
+                            </a>
+                            <p class="text-muted mb-0" style="font-size: 13px;">{{ item.created_at|date:"M d, Y" }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No related blogs found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Blog Detail and Sidebar -->
+
+{% endblock %}

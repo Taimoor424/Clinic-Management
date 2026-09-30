@@ -1,0 +1,34 @@
+{% load static %}
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+            <p class="d-inline-block border rounded-pill py-1 px-4">Doctors</p>
+            <h1>Our Experienced Doctors</h1>
+        </div>
+        <div class="row g-4 justify-content-center">
+            {% for doctor in doctors %}
+            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.{{ forloop.counter0|add:'1' }}s">
+                <div class="team-item position-relative rounded overflow-hidden bg-light">
+                    <div class="overflow-hidden">
+                        {% if doctor.image %}
+                            <img class="img-fluid" src="{{ doctor.image.url }}" alt="{{ doctor.full_name }}">
+                        {% else %}
+                            <img class="img-fluid" src="{% static 'default-doctor.jpg' %}" alt="Default Doctor">
+                        {% endif %}
+                    </div>
+                    <div class="team-text text-center p-4">
+                        <h5 class="mb-1">{{ doctor.full_name }}</h5>
+                        <p class="text-muted mb-2">{{ doctor.specialization }}</p>
+                        <small>{{ doctor.qualifications }}</small><br>
+                        <small>Experience: {{ doctor.years_of_experience }} years</small>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-danger">No doctors found.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

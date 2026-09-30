@@ -1,0 +1,37 @@
+{% load static %}
+{% block title %}{% endblock %}
+
+{% block content %}
+
+<!-- About Start -->
+ 
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5">
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                <div class="d-flex flex-column">
+                    <img class="img-fluid rounded w-75 align-self-end" src="{% static 'img/about-1.jpg' %}" alt="About Image 1">
+                    <img class="img-fluid rounded w-50 bg-white pt-3 pe-3" src="{% static 'img/about-2.jpg' %}" alt="About Image 2" style="margin-top: -25%;">
+                </div>
+            </div>
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                <p class="d-inline-block border rounded-pill py-1 px-4 a-btn">About Us</p>
+                <h1 class="mb-4">Why You Should Trust Us? Get to Know About Us!</h1>
+                <p>
+                    We are dedicated to providing high-quality, personalized healthcare services that meet the needs of our community. 
+                    With a team of experienced professionals and cutting-edge technology, we ensure every patient receives the best care possible.
+                </p>
+                <p class="mb-4">
+                    Whether it's regular checkups or specialized treatments, our commitment to patient care, safety, and satisfaction sets us apart.
+                </p>
+                <p><i class="far fa-check-circle text-primary me-3"></i>Quality Health Care</p>
+                <p><i class="far fa-check-circle text-primary me-3"></i>Only Qualified Doctors</p>
+                <p><i class="far fa-check-circle text-primary me-3"></i>Medical Research Professionals</p>
+                <a class="btn btn-primary rounded-pill py-3 px-5 mt-3" href="about/">Read More</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- About End -->
+
+{% endblock %}

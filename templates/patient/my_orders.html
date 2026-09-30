@@ -1,0 +1,69 @@
+{% extends "base/base.html" %}
+{% block content %}
+
+<section class="pt-5 pb-5">
+  <div class="container">
+    <div class="row mt-0 mt-md-4">
+
+      <!-- Sidebar Column -->
+      {% include "patient/sidebar.html" %}
+
+      <!-- Orders Content Column -->
+      <div class="col-lg-9 col-md-8 col-12">
+        <h4 class="fw-bold mb-4">My Orders</h4>
+
+        {% if orders %}
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Order ID</th>
+                  <th>Items</th>
+                  <th>Total Price</th>
+                  <th>Placed On</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in orders %}
+                  <tr>
+                    <td>{{ order.id }}</td>
+                    <td>
+                      <ul class="list-unstyled mb-0">
+                        {% for item in order.items.all %}
+                          <li>{{ item.medicine.name }} × {{ item.quantity }}</li>
+                        {% endfor %}
+                      </ul>
+                    </td>
+                    <td>Rs. {{ order.total_price }}</td>
+                    <td>{{ order.created_at|date:"d M Y, h:i A" }}</td>
+                    <td>
+                      {% if order.status == "pending" %}
+                        <span class="badge bg-warning text-dark">Pending</span>
+                      {% elif order.status == "processing" %}
+                        <span class="badge bg-primary">Processing</span>
+                      {% elif order.status == "shipped" %}
+                        <span class="badge bg-info text-dark">Shipped</span>
+                      {% elif order.status == "delivered" %}
+                        <span class="badge bg-success">Delivered</span>
+                      {% elif order.status == "cancelled" %}
+                        <span class="badge bg-danger">Cancelled</span>
+                      {% else %}
+                        <span class="badge bg-secondary">{{ order.status }}</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <div class="alert alert-info">You haven't placed any orders yet.</div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

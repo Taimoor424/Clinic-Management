@@ -1,0 +1,87 @@
+{% extends 'base/base.html' %}
+{% block content %}
+
+<section class="pt-5 pb-5">
+  <div class="container">
+    <div class="row mt-0 mt-md-4">
+
+      {% include 'doctor/sidebar.html' %}
+
+      <div class="col-lg-9 col-md-8 col-12">
+        <h4 class="mb-4 fw-bold">Notifications</h4>
+
+        {% if notifications %}
+          <ul class="list-group">
+            {% for n in notifications %}
+              <li class="list-group-item shadow-sm rounded-3 mb-3 p-3 d-flex justify-content-between align-items-center bg-white">
+                <div>
+                  <p class="mb-1 fw-semibold text-dark">
+                    {{ n.type }}
+                    {% if n.seen %}
+                      <span class="badge bg-secondary ms-2">Seen</span>
+                    {% endif %}
+                  </p>
+                  <small class="text-muted">
+                    <i class="fas fa-calendar-alt me-1"></i> {{ n.date|date:"d M Y, h:i A" }}
+                  </small>
+                </div>
+
+                <div>
+                  {% if not n.seen %}
+                    <a href="{% url 'doctor:mark_noti_seen' n.id %}?page={{ notifications.number }}" class="btn btn-outline-primary btn-sm">
+                      Mark as Seen <i class="fas fa-check-circle ms-1"></i>
+                    </a>
+                  {% else %}
+                    <button class="btn btn-outline-secondary btn-sm" disabled>
+                      Seen <i class="fas fa-check ms-1"></i>
+                    </button>
+                  {% endif %}
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+
+          <!-- Pagination -->
+          <nav class="mt-4" aria-label="Doctor notifications pagination">
+            <ul class="pagination justify-content-center">
+              {% if notifications.has_previous %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ notifications.previous_page_number }}" aria-label="Previous">
+                    &laquo;
+                  </a>
+                </li>
+              {% else %}
+                <li class="page-item disabled">
+                  <span class="page-link">&laquo;</span>
+                </li>
+              {% endif %}
+
+              {% for page_num in notifications.paginator.page_range %}
+                <li class="page-item {% if page_num == notifications.number %}active{% endif %}">
+                  <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+              {% endfor %}
+
+              {% if notifications.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ notifications.next_page_number }}" aria-label="Next">
+                    &raquo;
+                  </a>
+                </li>
+              {% else %}
+                <li class="page-item disabled">
+                  <span class="page-link">&raquo;</span>
+                </li>
+              {% endif %}
+            </ul>
+          </nav>
+
+        {% else %}
+          <div class="alert alert-info">You have no notifications.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

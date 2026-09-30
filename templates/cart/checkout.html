@@ -1,0 +1,132 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+
+{% block content %}
+     <!-- Page Header Start -->
+<div class="container-fluid page-header py-5 mb-5 wow fadeIn " data-wow-delay="0.1s">
+    <div class="container py-5">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Place Order</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase mb-0">
+                <li class="breadcrumb-item"><a class="text-white" href="{% url 'cart:view_cart' %}">Cart</a></li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+<div class="container-fluid py-5">
+  <div class="row justify-content-center">
+    <!-- Left: Checkout Form -->
+    <div class="col-lg-7">
+      <div class="card p-4 shadow-sm rounded-3">
+        <h4 class="mb-3">Contact</h4>
+        <form method="POST">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <input type="email" name="email" class="form-control" placeholder="Email" required>
+           
+          </div>
+
+          <h4 class="mb-3">Delivery</h4>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <input type="text" name="first_name" class="form-control" placeholder="First name" required>
+            </div>
+            <div class="col-md-6">
+              <input type="text" name="last_name" class="form-control" placeholder="Last name" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <input type="text" name="address" class="form-control" placeholder="Address" required>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <input type="text" name="city" class="form-control" placeholder="City" required>
+            </div>
+            <div class="col-md-6">
+              <input type="text" name="postal_code" class="form-control" placeholder="Postal code (optional)">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <input type="text" name="phone" class="form-control" placeholder="Phone" required>
+          </div>
+
+          <h4 class="mb-3">Shipping method</h4>
+     
+
+          <div class="form-check mb-4">
+            <input class="form-check-input" type="radio" name="shipping_method" id="cod" value="cod" {% if shipping_method == "cod" %}checked{% endif %}>
+            <label class="form-check-label d-flex justify-content-between w-100" for="cod">
+              <span>Cash on Delivery</span> <span>Rs 250</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">Place Order</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Right: Cart Summary -->
+    <div class="col-lg-4 mt-4 mt-lg-0">
+      <div class="card shadow-sm p-4">
+        <h5 class="mb-3">Your Order</h5>
+
+        {% for item in cart_items %}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="d-flex align-items-center">
+            <img src="{{ item.medicine.image.url }}" alt="{{ item.medicine.name }}" style="width: 60px; height: auto;" class="me-2 rounded">
+            <div>
+              <strong>{{ item.medicine.name }}</strong><br>
+              <small>x {{ item.quantity }}</small>
+            </div>
+          </div>
+          <span>Rs {{ item.get_subtotal }}</span>
+        </div>
+        {% endfor %}
+
+        <form method="POST">
+          {% csrf_token %}
+          <div class="input-group mb-3">
+            <input type="text" name="discount_code" class="form-control" placeholder="Discount code">
+            <button class="btn btn-outline-secondary" type="submit">Apply</button>
+          </div>
+        </form>
+
+        <hr>
+
+        <div class="d-flex justify-content-between">
+          <span>Subtotal</span>
+          <span>Rs {{ total }}</span>
+        </div>
+        <div class="d-flex justify-content-between">
+          <span>Shipping</span>
+          <span>
+            {% if shipping_method == "cod" %}
+              Rs 250
+            {% else %}
+              FREE
+            {% endif %}
+          </span>
+        </div>
+        <hr>
+        <div class="d-flex justify-content-between fw-bold fs-5">
+          <span>Total</span>
+          <span>
+            {% if shipping_method == "cod" %}
+              Rs {{ total|add:"250" }}
+            {% else %}
+              Rs {{ total }}
+            {% endif %}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

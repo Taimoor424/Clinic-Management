@@ -1,0 +1,41 @@
+{% load static %}
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 wow fadeIn" data-wow-delay="0.1s">
+    <a href="{% url 'base:home' %}" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <img src="{% static 'img/logo.png' %}" alt="Logo">
+    </a>
+    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a href="{% url 'base:home' %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
+            
+            <a href="{% url 'base:service' %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'service' %}active{% endif %}">Services</a>
+            <a href="{% url 'base:blogs' %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'blogs' %}active{% endif %}">Blogs</a>
+            <a href="{% url 'store:store_home' %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'store_home' %}active{% endif %}">Our Store</a>
+            <a href="{% url 'base:symptom_checker' %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'symptom_checker' %}active{% endif %}">Assistant</a>
+            <a href="{% url 'base:contact_view' %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'contact_view' %}active{% endif %}">Contact</a>
+            <a href="{% url 'base:about' %}" class="nav-item nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a>
+            
+        </div>
+
+        {% if user.is_authenticated %}
+            {% if user.user_type == "Patient" %}
+                <a href="{% url 'patient:dashboard' %}" class="btn btn-primary login-btn rounded-0 py-4 px-lg-5 d-none d-lg-block">
+                    Patient Dashboard<i class="fa fa-user ms-3"></i>
+                </a>
+            {% elif user.user_type == "Doctor" %}
+                <a href="{% url 'doctor:dashboard' %}" class="btn btn-primary login-btn rounded-0 py-4 px-lg-5 d-none d-lg-block">
+                    Doctor Dashboard<i class="fa fa-user-md ms-3"></i>
+                </a>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'userauths:sign-in' %}" class="btn btn-primary login-btn rounded-0 py-4 px-lg-5 d-none d-lg-block">
+                Login<i class="fa fa-arrow-right ms-3"></i>
+            </a>
+        {% endif %}
+    </div>
+</nav>
+<!-- Navbar End -->

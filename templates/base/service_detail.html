@@ -1,0 +1,91 @@
+{% extends "base/base.html" %}
+{% block content %}
+<!-- Spinner Start -->
+<div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div class="spinner-border text-primary" style="width: 4rem; height: 4rem;" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+<!-- Spinner End -->
+
+<!-- Page Header Start -->
+<div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container py-5">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">{{ service.name }}</h1>
+        <nav aria-label="breadcrumb animated slideInDown">
+            <ol class="breadcrumb text-uppercase mb-0">
+                <li class="breadcrumb-item"><a class="text-white" href="{% url 'base:service' %}">Services</a></li>
+                <li class="breadcrumb-item text-c" aria-current="page">{{ service.name|truncatechars:25 }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Service Info Section -->
+<section class="container">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-12 col-lg-7 p-4 rounded-3 bg-white">
+            <h1 class="display-4 fw-bold mt-4">
+                <span class="text-primary"><b>{{ service.name }}</b></span>
+            </h1>
+            <p class="fs-4 mt-4">{{ service.description }}</p>
+        </div>
+        <div class="col-12 col-lg-5">
+            {% if service.image %}
+                <img class="img-fluid mt-4" style="width: 100%; height: 350px; object-fit: cover; border-radius: 5px;" src="{{ service.image.url }}" alt="{{ service.name }}" />
+            {% else %}
+                <div class="text-center mt-4 bg-light d-flex align-items-center justify-content-center" style="height: 350px; border-radius: 5px;">
+                    <i class="fa fa-stethoscope fs-1 text-primary"></i>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Available Doctors Section -->
+<section class="container mt-5">
+    <h2 class="mb-4">Available Doctors</h2>
+
+    {% for d in service.available_doctors.all %}
+        <div class="p-3 mb-4 shadow d-flex align-items-center rounded">
+            {% if d.image %}
+                <img src="{{ d.image.url }}" alt="Doctor Image" style="width: 70px; height: 70px; object-fit: cover; border-radius: 5px;" />
+            {% else %}
+                <div class="d-flex align-items-center justify-content-center bg-light" style="width: 70px; height: 70px; border-radius: 5px;">
+                    <i class="fa fa-user-md text-primary fs-3"></i>
+                </div>
+            {% endif %}
+
+            <div class="ms-3 w-100">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-1">{{ d.full_name }}</h5>
+                        <div class="d-flex gap-2">
+                            <p class="fw-semibold mb-0">Time Available:</p>
+                            <p class="mb-0">{{ d.next_available_appointment_date }}</p>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <p class="fw-semibold mb-0">Price:</p>
+                            <p class="mb-0">Rs. {{ service.cost }}</p>
+                        </div>
+                    </div>
+                    <div>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'base:book_appointment' service.id d.id %}" class="btn btn-primary me-4">
+                                Book Now <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'userauths:sign-in' %}?next={% url 'base:book_appointment' service.id d.id %}" class="btn btn-primary me-4">
+                                Book Now <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-muted">No doctors available for this service at the moment.</p>
+    {% endfor %}
+</section>
+{% endblock content %}

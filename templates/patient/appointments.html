@@ -1,0 +1,89 @@
+{% extends "base/base.html" %}
+{% block content %}
+
+<section class="pt-5 pb-5">
+  <div class="container">
+    <div class="row mt-0 mt-md-4">
+      {% include "patient/sidebar.html" %}
+
+      <div class="col-lg-9 col-md-8 col-12">
+        <h4 class="mb-4 fw-bold">My Appointments</h4>
+
+        <!-- Search Bar -->
+        <form method="GET" class="row mb-4 g-2">
+          <div class="col-sm-8 col-md-6 col-lg-5">
+            <input type="text" name="search" class="form-control" placeholder="Search by doctor name" value="{{ search_query }}">
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-search me-1"></i> Search
+            </button>
+          </div>
+        </form>
+
+        {% if appointments %}
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover text-nowrap align-middle">
+            <thead class="table-primary text-center">
+              <tr>
+                <th>Appointment ID</th>
+                <th>Service</th>
+                <th>Doctor</th>
+                <th>Issue</th>
+                <th>Symptoms</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="text-center">
+              {% for a in appointments %}
+              <tr>
+                <td>{{ a.appointment_id }}</td>
+                <td>{{ a.service.name }}</td>
+                <td>{{ a.doctor.full_name }}</td>
+                <td>{{ a.issues }}</td>
+                <td>{{ a.symptoms }}</td>
+                <td>
+                  {% if a.status == "Pending" %}
+                    <span class="badge bg-warning text-dark">Pending</span>
+                  {% elif a.status == "Confirmed" %}
+                    <span class="badge bg-success">Confirmed</span>
+                  {% elif a.status == "Completed" %}
+                    <span class="badge bg-info text-dark">Completed</span>
+                  {% elif a.status == "Cancelled" %}
+                    <span class="badge bg-danger">Cancelled</span>
+                  {% else %}
+                    <span class="badge bg-secondary">{{ a.status }}</span>
+                  {% endif %}
+                </td>
+                <td>{{ a.appointment_date }}</td>
+                <td>
+                  <a href="{% url 'patient:appointment_detail' a.appointment_id %}" class="btn btn-sm btn-outline-primary" title="View Details">
+                    <i class="fas fa-eye"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+          No appointments found.
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .table th,
+  .table td {
+    vertical-align: middle !important;
+    white-space: nowrap;
+  }
+</style>
+
+{% endblock content %}
