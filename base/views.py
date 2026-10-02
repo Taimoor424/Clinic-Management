@@ -26,13 +26,16 @@ def symptom_checker(request):
         if symptom_input:  # Only continue if input is not empty
             co = cohere.Client(settings.COHERE_API_KEY)
 
-            response = co.generate(
-                model='command-r-plus',  
-                prompt=f"User has the following symptoms: {symptom_input}. Suggest possible homeopathic medicines and health tips in English and Urdu.",
-                max_tokens=300
-            )
-
-            response_text = response.generations[0].text
+            # --- ONLY COHERE CHANGED HERE ---
+            try:
+                response = co.chat(
+                    model='command-r-plus',  
+                    message=f"User has the following symptoms: {symptom_input}. Suggest possible homeopathic medicines and health tips in English and Urdu."
+                )
+                response_text = response.text
+            except Exception as e:
+                response_text = f"❌ Failed to get response: {str(e)}"
+            # ---------------------------------
         else:
             response_text = "⚠️ Please enter some symptoms to get a recommendation."
 
@@ -121,7 +124,6 @@ def contact_view(request):
 
 
 
-import cohere  # Make sure `cohere` is installed: pip install cohere
 
 def index(request):
     doctors = Doctor.objects.all()
@@ -134,11 +136,16 @@ def index(request):
             co = cohere.Client(settings.COHERE_API_KEY)
             prompt = f"User symptoms: {symptom}\nGive some health advice, possible disease, and homeopathic medicine suggestions in both English and Urdu."
 
+            # --- ONLY COHERE CHANGED HERE ---
             try:
-                response = co.generate(prompt=prompt, max_tokens=300)
-                response_text = response.generations[0].text.strip()
+                response = co.chat(
+                    model='command-r-plus',
+                    message=prompt
+                )
+                response_text = response.text.strip()
             except Exception as e:
                 response_text = f"❌ Failed to get response: {str(e)}"
+            # ---------------------------------
         else:
             response_text = "⚠️ Please enter symptoms before submitting."
 
@@ -231,6 +238,7 @@ Clinic Management System
             "service": service,
             "doctor": doctor,
             "patient": patient,
+
             "form": form,
         })
         else:
